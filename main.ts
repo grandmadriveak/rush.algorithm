@@ -9,14 +9,13 @@ const commands = {
   [CommandType.PendingTask]: commandServices.pendingTasks,
 }
 
-const DISCORD_TOKEN = Deno.env.get("DISCORD_TOKEN");
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.DirectMessages,
-    GatewayIntentBits.GuildWebhooks
+    GatewayIntentBits.GuildWebhooks,
   ],
 });
 
@@ -26,7 +25,7 @@ client.on(Events.ClientReady, (readyClient) => {
 
 client.on(Events.InteractionCreate, async interaction => {
   if (!interaction.isChatInputCommand()) return;
-
+  
   if (interaction.commandName === 'ping') {
     await interaction.reply('Pong!');
   }
@@ -43,4 +42,4 @@ client.on(Events.MessageCreate, async interaction => {
   }
 });
 
-client.login(DISCORD_TOKEN);
+client.login(Deno.env.get("DISCORD_TOKEN"));
