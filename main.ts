@@ -1,5 +1,13 @@
 import { Client, Events } from "npm:discord.js@14.21.0";
 import { GatewayIntentBits } from "npm:discord-api-types@0.38.14";
+import * as commandServices from "./command.ts";
+import { CommandType } from "./constants.ts";
+
+const commands = {
+  [CommandType.Help]: commandServices.help, 
+  [CommandType.Subscribe]: commandServices.subcribe, 
+  [CommandType.PendingTask]: commandServices.pendingTasks, 
+}
 
 const DISCORD_TOKEN = Deno.env.get("DISCORD_TOKEN");
 const client = new Client({
@@ -7,7 +15,7 @@ const client = new Client({
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.DirectMessages
+        GatewayIntentBits.DirectMessages,
     ],
 });
 
@@ -22,5 +30,18 @@ client.on(Events.InteractionCreate, async interaction => {
     await interaction.reply('Pong!');
   }
 });
+
+client.on(Events.MessageCreate, async interaction => {
+  if(!interaction.author.bot) return;
+  else {
+    const splitCommand = interaction.content.split(" ");
+    const userCommand = splitCommand[0];
+    const params = splitCommand.at(1);
+    const execCommand = commands[userCommand[0]];
+    // await execCommand(interaction, params);
+  }
+});
+
+
 
 client.login(DISCORD_TOKEN);
