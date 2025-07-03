@@ -1,13 +1,13 @@
-const help = () => {
-    console.log("help successfull")
+const help = async (interaction: object, params: []) => {
+  console.log("help successfull")
 }
 
-const subcribe = () => {
-    console.log("subcribe call successfull")
+const subcribe = async (interaction: object, params: []) => {
+  console.log("subcribe call successfull")
 }
 
-const pendingTasks = () => {
-    console.log("pending tasks call successfull")
+const pendingTasks = async (interaction: object, params: []) => {
+  console.log("pending tasks call successfull")
 }
 
 export { help, subcribe, pendingTasks }

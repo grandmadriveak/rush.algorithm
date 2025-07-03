@@ -1,26 +1,27 @@
 import { Client, Events } from "npm:discord.js@14.21.0";
-import { GatewayIntentBits } from "npm:discord-api-types@0.38.14";
 import * as commandServices from "./command.ts";
 import { CommandType } from "./constants.ts";
+import { GatewayIntentBits } from "npm:discord-api-types@0.38.14/v10";
 
 const commands = {
-  [CommandType.Help]: commandServices.help, 
-  [CommandType.Subscribe]: commandServices.subcribe, 
-  [CommandType.PendingTask]: commandServices.pendingTasks, 
+  [CommandType.Help]: commandServices.help,
+  [CommandType.Subscribe]: commandServices.subcribe,
+  [CommandType.PendingTask]: commandServices.pendingTasks,
 }
 
 const DISCORD_TOKEN = Deno.env.get("DISCORD_TOKEN");
 const client = new Client({
-    intents:[
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.DirectMessages,
-    ],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.DirectMessages,
+    GatewayIntentBits.GuildWebhooks
+  ],
 });
 
 client.on(Events.ClientReady, (readyClient) => {
-    console.log(`Logged in as ${readyClient.user.tag}!`);
+  console.log(`Logged in as ${readyClient.user.tag}!`);
 })
 
 client.on(Events.InteractionCreate, async interaction => {
@@ -32,7 +33,7 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 client.on(Events.MessageCreate, async interaction => {
-  if(!interaction.author.bot) return;
+  if (!interaction.author.bot) return;
   else {
     const splitCommand = interaction.content.split(" ");
     const userCommand = splitCommand[0];
@@ -41,7 +42,5 @@ client.on(Events.MessageCreate, async interaction => {
     // await execCommand(interaction, params);
   }
 });
-
-
 
 client.login(DISCORD_TOKEN);
