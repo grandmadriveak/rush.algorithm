@@ -1,0 +1,8 @@
+{
+  "tasks": {
+     "dev": "deno --unstable-cron --allow-net --watch --allow-env --unstable-kv main.ts"
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1"
+  }
+}
