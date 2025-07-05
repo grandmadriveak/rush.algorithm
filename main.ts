@@ -1,45 +1,33 @@
-import { Client, Events } from "npm:discord.js@14.21.0";
-import * as commandServices from "./command.ts";
-import { CommandType } from "./constants.ts";
-import { GatewayIntentBits } from "npm:discord-api-types@0.38.14/v10";
+import { CommandType } from "./const.ts";
+import { sendDailyProblems, handleCreateChallenge, handleSubcribe, handleUnsubscibe , handlePing} from "./discord.ts";
 
-const commands = {
-  [CommandType.Help]: commandServices.help,
-  [CommandType.Subscribe]: commandServices.subcribe,
-  [CommandType.PendingTask]: commandServices.pendingTasks,
+await sendDailyProblems();
+
+Deno.cron("Send daily challenge", "", async () => {
+  await sendDailyProblems();
+});
+
+const commandHandlers = {
+  [CommandType.Ping]: handlePing,
+  [CommandType.Subcribe]: handleSubcribe,
+  [CommandType.Unsubcribe]: handleUnsubscibe,
+  [CommandType.Challenge]: handleCreateChallenge,
 }
 
-const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.DirectMessages,
-    GatewayIntentBits.GuildWebhooks,
-  ],
-});
+// Deno.serve((req: Request) => {
+//   console.log("Method: ", req.method);
 
-client.on(Events.ClientReady, (readyClient) => {
-  console.log(`Logged in as ${readyClient.user.tag}!`);
-})
+//   const url = new URL(req.url);
 
-client.on(Events.InteractionCreate, async interaction => {
-  if (!interaction.isChatInputCommand()) return;
-  
-  if (interaction.commandName === 'ping') {
-    await interaction.reply('Pong!');
-  }
-});
+//   console.log("Pathname: ", url.pathname);
+//   console.log("Search params: ", url.searchParams);
 
-client.on(Events.MessageCreate, async interaction => {
-  if (!interaction.author.bot) return;
-  else {
-    const splitCommand = interaction.content.split(" ");
-    const userCommand = splitCommand[0];
-    const params = splitCommand.at(1);
-    const execCommand = commands[userCommand[0]];
-    // await execCommand(interaction, params);
-  }
-});
+//   const commandHandler = commandHandlers[url.pathname];
 
-client.login(Deno.env.get("DISCORD_TOKEN"));
+//   return new Response("Hello, world", {
+//     status: 200,
+//     headers: {
+//       "content-type": "text/plain; charset=utf-8",
+//     },
+//   });
+// });
