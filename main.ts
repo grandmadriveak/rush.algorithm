@@ -14,20 +14,20 @@ const commandHandlers = {
   [CommandType.Challenge]: handleCreateChallenge,
 }
 
-// Deno.serve((req: Request) => {
-//   console.log("Method: ", req.method);
+Deno.serve((req: Request) => {
+  console.log("Method: ", req.method);
 
-//   const url = new URL(req.url);
+  const url = new URL(req.url);
 
-//   console.log("Pathname: ", url.pathname);
-//   console.log("Search params: ", url.searchParams);
+  console.log("Pathname: ", url.pathname);
+  console.log("Search params: ", url.searchParams);
 
-//   const commandHandler = commandHandlers[url.pathname];
+  const commandHandler = commandHandlers[url.pathname];
 
-//   return new Response("Hello, world", {
-//     status: 200,
-//     headers: {
-//       "content-type": "text/plain; charset=utf-8",
-//     },
-//   });
-// });
+  return new Response("Hello, world", {
+    status: 200,
+    headers: {
+      "content-type": "text/plain; charset=utf-8",
+    },
+  });
+});

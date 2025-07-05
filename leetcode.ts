@@ -4,7 +4,7 @@ export const leetcodeGraphQL = async (
   variables?: object,
 ) => {
   const url = "https://leetcode.com/graphql";
-  const response = await fetch("https://leetcode.com/graphql", {
+  const response = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ query, operationName, variables }),
