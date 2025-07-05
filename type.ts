@@ -15,5 +15,3 @@ export type DailyQuestion = {
   link: string;
   question: Question;
 };
-
-export type Difficulty = "easy" | "medium" | "hard"

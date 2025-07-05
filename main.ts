@@ -1,12 +1,10 @@
 import { CommandType } from "./const.ts";
 import { sendDailyProblems, handleCreateChallenge, handleSubcribe, handleUnsubscibe , handlePing} from "./discord.ts";
 
+// Deno.cron("Send daily challenge", "", async () => {
+//   await sendDailyProblems();
+// });
 await sendDailyProblems();
-
-Deno.cron("Send daily challenge", "", async () => {
-  await sendDailyProblems();
-});
-
 const commandHandlers = {
   [CommandType.Ping]: handlePing,
   [CommandType.Subcribe]: handleSubcribe,
