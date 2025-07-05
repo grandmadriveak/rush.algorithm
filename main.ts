@@ -1,7 +1,7 @@
 import { CommandType } from "./const.ts";
 import { sendDailyProblems, handleCreateChallenge, handleSubcribe, handleUnsubscibe , handlePing} from "./discord.ts";
 
-Deno.cron("Send daily challenge", "", async () => {
+Deno.cron("Send daily challenge", "0 7 * * *", async () => {
   await sendDailyProblems();
 });
 
