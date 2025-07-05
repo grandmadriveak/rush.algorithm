@@ -3,7 +3,7 @@ import { DailyQuestion } from "./type.ts";
 import { DifficultyEmoji } from "./const.ts";
 
 const DISCORD_CHANNEL_ID = Deno.env.get("DISCORD_CHANNEL_ID") ||
-  "1339884014932070492";
+  "";
 const DISCORD_TOKEN = Deno.env.get("DISCORD_TOKEN") ||
   "";
 
