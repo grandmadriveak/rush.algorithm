@@ -7,8 +7,10 @@ const DISCORD_CHANNEL_ID = Deno.env.get("DISCORD_CHANNEL_ID") ||
   "";
 const DISCORD_TOKEN = Deno.env.get("DISCORD_TOKEN") ||
   "";
+const DISCORD_BOT_PUBLICKEY = Deno.env.get("DISCORD_BOT_PUBLICKEY") ||
+  "";
 
-if (!DISCORD_TOKEN || !DISCORD_CHANNEL_ID) {
+if (!DISCORD_TOKEN || !DISCORD_CHANNEL_ID || !DISCORD_BOT_PUBLICKEY) {
   throw new Error("Copy logic from other guys in github");
 }
 
@@ -113,31 +115,31 @@ const sendDailyProblems = async () => {
 };
 
 const hexToUint8Array = (hex: string) => {
-  return new Uint8Array(hex.match(/.{1,2}/g)!.map(v => parseInt(v, 16)));
-}
+  return new Uint8Array(hex.match(/.{1,2}/g)!.map((v) => parseInt(v, 16)));
+};
 
 const verifySignature = async (req: Request) => {
   const signature = req.headers.get("X-Signature-Ed25519");
   const timestamp = req.headers.get("X-Signature-Timestamp");
-  const rawBody = JSON.stringify(req.body); // Re-stringify for verification
+  const body = JSON.stringify(req.body);
 
   if (!signature || !timestamp) {
     return false;
   }
 
   try {
-    const isVerified = true 
-    // nacl.sign.detached.verify(
-    //   Buffer.from(timestamp + rawBody),
-    //   Buffer.from(signature, "hex"),
-    //   Buffer.from(PUBLIC_KEY, "hex"),
-    // );
+    const isVerified = true;
+    nacl.sign.detached.verify(
+      new TextEncoder().encode(timestamp + body),
+      hexToUint8Array(signature),
+      hexToUint8Array(DISCORD_BOT_PUBLICKEY),
+    );
 
     if (!isVerified) {
       return false;
     }
   } catch (error) {
-    console.log("Invalid signature")
+    console.log("Invalid signature");
     return false;
   }
 
@@ -163,5 +165,5 @@ export {
   handleSubcribe,
   handleUnsubscibe,
   sendDailyProblems,
-  verifySignature
+  verifySignature,
 };
