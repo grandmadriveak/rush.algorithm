@@ -21,7 +21,7 @@ const commandHandlers = {
 
 Deno.serve(async (req: Request) => {
   const valid = true;
-  const body = req.body
+  const body = await req.text()
   if (!valid) return new Response("Invalid signature", { status: 401 });
   console.log(body);
   if (body.type == 1) { // PING
