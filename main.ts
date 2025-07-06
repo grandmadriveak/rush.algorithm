@@ -24,7 +24,10 @@ Deno.serve(async (req: Request) => {
   const body = await req.text()
   if (!valid) return new Response("Invalid signature", { status: 401 });
   console.log(body);
+  if (body.type === 1) { // PING
+    console.log("Ping successful")
     return Response.json({ type: 1 }); // PONG
+  }
   console.log("Method: ", req.method);
 
   const url = new URL(req.url);
