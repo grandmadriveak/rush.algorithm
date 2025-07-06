@@ -36,7 +36,7 @@ Deno.serve(async (req: Request) => {
   console.log("Pathname: ", url.pathname);
   console.log("Search params: ", url.searchParams);
 
-  const commandHandler = commandHandlers[url.pathname];
+  // const commandHandler = commandHandlers[url.pathname];
 
   return Response.json({
     type: 4,
