@@ -1,6 +1,7 @@
 import { leetcodeGraphQL } from "./leetcode.ts";
 import { DailyQuestion } from "./type.ts";
 import { DifficultyEmoji } from "./const.ts";
+import nacl from "https://esm.sh/tweetnacl@v1.0.3?dts";
 
 const DISCORD_CHANNEL_ID = Deno.env.get("DISCORD_CHANNEL_ID") ||
   "";
@@ -62,13 +63,14 @@ const getDailyQuestion = async (): Promise<DailyQuestion> => {
 };
 
 const sendDailyProblems = async () => {
+  console.log("Daily challenge begin send");
   const response = await getDailyQuestion();
   const emoji = getEmojiForDifficulty(response.question.difficulty);
   const message = {
     "embeds": [
       {
-        "title": `Vào giải leetcode nào anh em ${response.question.title}`,
-        "url": `https://leetcode.com/${response.link}/`,
+        "title": `Vào giải leetcode nào anh em !!!`,
+        "url": `https://leetcode.com/${response.link}`,
         "description":
           `🔍 ${response.question.title}!\n\n📊 **Difficulty:** ${emoji}\n💎 **Subscribe to get daily question!**`,
         "color": 9807270,
@@ -107,6 +109,40 @@ const sendDailyProblems = async () => {
     ],
   };
   await discordSendMessage(message);
+  console.log("Daily challenge sent");
+};
+
+const hexToUint8Array = (hex: string) => {
+  return new Uint8Array(hex.match(/.{1,2}/g)!.map(v => parseInt(v, 16)));
+}
+
+const verifySignature = async (req: Request) => {
+  const signature = req.headers.get("X-Signature-Ed25519");
+  const timestamp = req.headers.get("X-Signature-Timestamp");
+  const rawBody = JSON.stringify(req.body); // Re-stringify for verification
+
+  if (!signature || !timestamp) {
+    return false;
+  }
+
+  try {
+    const isVerified = true 
+    // nacl.sign.detached.verify(
+    //   Buffer.from(timestamp + rawBody),
+    //   Buffer.from(signature, "hex"),
+    //   Buffer.from(PUBLIC_KEY, "hex"),
+    // );
+
+    if (!isVerified) {
+      return false;
+    }
+  } catch (error) {
+    console.log("Invalid signature")
+    return false;
+  }
+};
+
+const handleInteraction = () => {
 };
 
 const handleSubcribe = () => {
@@ -120,8 +156,10 @@ const handleCreateChallenge = () => {
 
 export {
   handleCreateChallenge,
+  handleInteraction,
   handlePing,
   handleSubcribe,
   handleUnsubscibe,
   sendDailyProblems,
+  verifySignature
 };
