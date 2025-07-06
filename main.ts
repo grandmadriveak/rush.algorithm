@@ -21,8 +21,13 @@ const commandHandlers = {
 
 Deno.serve(async (req: Request) => {
   const valid = await verifySignature(req);
+  const body = await req.text();
   if (!valid) return new Response("Invalid signature", { status: 401 });
 
+  const interaction = JSON.parse(body);
+  if (interaction.type === 1) { // PING
+    return Response.json({ type: 1 }); // PONG
+  }
   console.log("Method: ", req.method);
 
   const url = new URL(req.url);
