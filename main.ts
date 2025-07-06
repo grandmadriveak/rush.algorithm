@@ -23,7 +23,7 @@ Deno.serve(async (req: Request) => {
   const valid = true;
   const body = await req.text();
   if (!valid) return new Response("Invalid signature", { status: 401 });
-
+  console.log(body);
   const interaction = JSON.parse(body);
   if (interaction.type === 1) { // PING
     return Response.json({ type: 1 }); // PONG
