@@ -140,6 +140,8 @@ const verifySignature = async (req: Request) => {
     console.log("Invalid signature")
     return false;
   }
+
+  return true;
 };
 
 const handleInteraction = () => {
