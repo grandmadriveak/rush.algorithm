@@ -22,7 +22,7 @@ const commandHandlers = {
 Deno.serve(async (req: Request) => {
   const valid = await verifySignature(req);
   const body = await req.text();
-  if (!valid) return new Response("Invalid signature", { status: 401 });
+  if (!valid) return new Response("Invalid signature", { status: 405 });
   const interaction = JSON.parse(body);
   console.log(interaction.type);
   if (interaction.type === 1) { // PING
