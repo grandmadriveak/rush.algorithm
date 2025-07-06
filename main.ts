@@ -22,6 +22,7 @@ const commandHandlers = {
 Deno.serve(async (req: Request) => {
   const valid = await verifySignature(req);
   const body = await req.text();
+  console.log(req);
   if (!valid) return new Response("Invalid signature", { status: 405 });
   const interaction = JSON.parse(body);
   console.log(interaction.type);
