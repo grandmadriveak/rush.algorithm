@@ -38,10 +38,11 @@ Deno.serve(async (req: Request) => {
 
   const commandHandler = commandHandlers[url.pathname];
 
-  return new Response("Hello, world", {
-    status: 200,
-    headers: {
-      "content-type": "text/plain; charset=utf-8",
+  return Response.json({
+    type: 4, // CHANNEL_MESSAGE_WITH_SOURCE
+    data: {
+      content: `Handled interaction type: ${interaction.type}`,
+      flags: 64, // Chỉ hiển thị với người tương tác
     },
   });
 });
