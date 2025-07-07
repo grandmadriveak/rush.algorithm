@@ -1,8 +1,9 @@
 const CommandType = {
-  Ping: "\ping",
-  Subcribe: "\subscibe",
-  Unsubcribe: "\nsubscribe",
-  Challenge: "\challenge",
+  Ping: "ping",
+  Subcribe: "subscibe",
+  Unsubcribe: `unsubscribe`,
+  Challenge: "challenge",
+  Interaction: "interaction",
 };
 
 const DifficultyEmoji = {

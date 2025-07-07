@@ -80,7 +80,7 @@ const sendDailyProblems = async () => {
           "url": "https://leetcode.com/static/images/LeetCode_logo.png",
         },
         "footer": {
-          "text": "LeetCode Challenge | Hàng ngày lúc 8:00 AM",
+          "text": "LeetCode Challenge | Hàng ngày lúc 7:00 AM",
         },
       },
     ],
@@ -146,16 +146,38 @@ const verifySignature = async (req: Request) => {
   return true;
 };
 
-const handleInteraction = () => {
+const handleInteraction = async (req: Request): Promise<Response> => {
+  const valid = await verifySignature(req);
+  const body = await req.text();
+  if (!valid) return new Response("Invalid signature", { status: 405 });
+  const interaction = JSON.parse(body);
+  console.log(interaction.type);
+  if (interaction.type === 1) { 
+    console.log("Ping successful");
+    return Response.json({ type: 1 }); 
+  }
+
+  return Response.json({
+    data: { content: "Message content" },
+  });
 };
 
-const handleSubcribe = () => {
+const handleSubcribe = async (req: Request): Promise<Response> => {
+  return Response.json({
+    data: { content: "Message content" },
+  });
 };
 
-const handleUnsubscibe = () => {
+const handleUnsubscibe = async (req: Request): Promise<Response> => {
+  return Response.json({
+    data: { content: "Message content" },
+  });
 };
 
-const handleCreateChallenge = () => {
+const handleCreateChallenge = async (req: Request): Promise<Response> => {
+  return Response.json({
+    data: { content: "Message content" },
+  });
 };
 
 export {

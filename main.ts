@@ -1,14 +1,14 @@
 import { CommandType } from "./const.ts";
 import {
   handleCreateChallenge,
+  handleInteraction,
   handlePing,
   handleSubcribe,
   handleUnsubscibe,
   sendDailyProblems,
-  verifySignature,
 } from "./discord.ts";
 
-Deno.cron("Send daily challenge", "0 7 * * *", async () => {
+Deno.cron("Send daily challenge", "0 0 * * *", async () => {
   await sendDailyProblems();
 });
 
@@ -17,30 +17,13 @@ const commandHandlers = {
   [CommandType.Subcribe]: handleSubcribe,
   [CommandType.Unsubcribe]: handleUnsubscibe,
   [CommandType.Challenge]: handleCreateChallenge,
+  [CommandType.Interaction]: handleInteraction,
 };
 
-Deno.serve(async (req: Request) => {
-  const valid = await verifySignature(req);
-  const body = await req.text();
-  console.log(req);
-  if (!valid) return new Response("Invalid signature", { status: 405 });
-  const interaction = JSON.parse(body);
-  console.log(interaction.type);
-  if (interaction.type === 1) { // PING
-    console.log("Ping successful");
-    return Response.json({ type: 1 }); // PONG
-  }
-  console.log("Method: ", req.method);
-
+Deno.serve(async (req: Request): Promise<Response> => {
   const url = new URL(req.url);
+  const handler = commandHandlers[url.pathname.slice(1)];
+  const result = await handler(req) as Response;
 
-  console.log("Pathname: ", url.pathname);
-  console.log("Search params: ", url.searchParams);
-
-  // const commandHandler = commandHandlers[url.pathname];
-
-  return Response.json({
-    type: 4,
-    data: { content: "Message content" },
-  });
+  return result;
 });
