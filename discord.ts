@@ -113,7 +113,6 @@ const sendDailyProblems = async () => {
   await discordSendMessage(message);
   console.log("Daily challenge sent");
 };
-
 const hexToUint8Array = (hex: string) => {
   return new Uint8Array(hex.match(/.{1,2}/g)!.map((v) => parseInt(v, 16)));
 };
@@ -150,8 +149,8 @@ const handleInteractions = async (req: Request): Promise<Response> => {
   const body = await req.text();
   if (!valid) return new Response("Invalid signature", { status: 405 });
   const interaction = JSON.parse(body);
-  console.log(interaction.type);
-  if (interaction.type === 1) {
+  console.log(interaction);
+  if (interaction.type == 1) {
     console.log("Ping successful");
     return Response.json({ type: 1 });
   }
