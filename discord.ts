@@ -128,8 +128,7 @@ const verifySignature = async (req: Request) => {
   }
 
   try {
-    const isVerified = true;
-    nacl.sign.detached.verify(
+    const isVerified = nacl.sign.detached.verify(
       new TextEncoder().encode(timestamp + body),
       hexToUint8Array(signature),
       hexToUint8Array(DISCORD_BOT_PUBLICKEY),

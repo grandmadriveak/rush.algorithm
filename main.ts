@@ -22,6 +22,7 @@ const commandHandlers = {
 
 Deno.serve(async (req: Request): Promise<Response> => {
   const url = new URL(req.url);
+  console.log(url.pathname.slice(1));
   const handler = commandHandlers[url.pathname.slice(1)];
   const result = await handler(req) as Response;
 
