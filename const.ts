@@ -3,7 +3,7 @@ const CommandType = {
   Subcribe: "subscibe",
   Unsubcribe: `unsubscribe`,
   Challenge: "challenge",
-  Interaction: "interaction",
+  Interactions: "interactions",
 };
 
 const DifficultyEmoji = {

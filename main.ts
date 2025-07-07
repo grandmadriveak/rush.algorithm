@@ -1,7 +1,7 @@
 import { CommandType } from "./const.ts";
 import {
   handleCreateChallenge,
-  handleInteraction,
+  handleInteractions,
   handlePing,
   handleSubcribe,
   handleUnsubscibe,
@@ -17,7 +17,7 @@ const commandHandlers = {
   [CommandType.Subcribe]: handleSubcribe,
   [CommandType.Unsubcribe]: handleUnsubscibe,
   [CommandType.Challenge]: handleCreateChallenge,
-  [CommandType.Interaction]: handleInteraction,
+  [CommandType.Interactions]: handleInteractions,
 };
 
 Deno.serve(async (req: Request): Promise<Response> => {

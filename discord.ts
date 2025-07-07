@@ -145,15 +145,15 @@ const verifySignature = async (req: Request) => {
   return true;
 };
 
-const handleInteraction = async (req: Request): Promise<Response> => {
+const handleInteractions = async (req: Request): Promise<Response> => {
   const valid = await verifySignature(req);
   const body = await req.text();
   if (!valid) return new Response("Invalid signature", { status: 405 });
   const interaction = JSON.parse(body);
   console.log(interaction.type);
-  if (interaction.type === 1) { 
+  if (interaction.type === 1) {
     console.log("Ping successful");
-    return Response.json({ type: 1 }); 
+    return Response.json({ type: 1 });
   }
 
   return Response.json({
@@ -181,7 +181,7 @@ const handleCreateChallenge = async (req: Request): Promise<Response> => {
 
 export {
   handleCreateChallenge,
-  handleInteraction,
+  handleInteractions,
   handlePing,
   handleSubcribe,
   handleUnsubscibe,
